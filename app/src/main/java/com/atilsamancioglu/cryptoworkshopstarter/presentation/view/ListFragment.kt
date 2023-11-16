@@ -1,4 +1,4 @@
-package com.atilsamancioglu.cryptoworkshopstarter.view
+package com.atilsamancioglu.cryptoworkshopstarter.presentation.view
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -11,10 +11,10 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.atilsamancioglu.cryptoworkshopstarter.model.CryptoModel
+import com.atilsamancioglu.cryptoworkshopstarter.domain.model.CryptoModel
 import com.atilsamancioglu.cryptoworkshopstarter.databinding.FragmentListBinding
-import com.atilsamancioglu.cryptoworkshopstarter.service.CryptoAPI
-import com.atilsamancioglu.cryptoworkshopstarter.viewmodel.CryptoViewModel
+import com.atilsamancioglu.cryptoworkshopstarter.data.service.CryptoAPI
+import com.atilsamancioglu.cryptoworkshopstarter.presentation.viewmodel.CryptoViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

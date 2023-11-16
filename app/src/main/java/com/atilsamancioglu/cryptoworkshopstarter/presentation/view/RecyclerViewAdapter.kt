@@ -1,11 +1,11 @@
-package com.atilsamancioglu.cryptoworkshopstarter.view
+package com.atilsamancioglu.cryptoworkshopstarter.presentation.view
 
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.atilsamancioglu.cryptoworkshopstarter.databinding.RecyclerRowBinding
-import com.atilsamancioglu.cryptoworkshopstarter.model.CryptoModel
+import com.atilsamancioglu.cryptoworkshopstarter.domain.model.CryptoModel
 
 class RecyclerViewAdapter(private val cryptoList : ArrayList<CryptoModel>, private val listener : Listener) : RecyclerView.Adapter<RecyclerViewAdapter.RowHolder>() {
 

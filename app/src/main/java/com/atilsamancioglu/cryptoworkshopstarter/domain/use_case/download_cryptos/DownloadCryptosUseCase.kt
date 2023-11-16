@@ -1,12 +1,13 @@
-package com.atilsamancioglu.cryptoworkshopstarter.repository
+package com.atilsamancioglu.cryptoworkshopstarter.domain.use_case.download_cryptos
 
-import com.atilsamancioglu.cryptoworkshopstarter.model.CryptoModel
-import com.atilsamancioglu.cryptoworkshopstarter.service.CryptoAPI
+import com.atilsamancioglu.cryptoworkshopstarter.data.service.CryptoAPI
+import com.atilsamancioglu.cryptoworkshopstarter.domain.model.CryptoModel
+import com.atilsamancioglu.cryptoworkshopstarter.domain.repository.CryptoDownload
 import com.atilsamancioglu.cryptoworkshopstarter.util.Resource
 import javax.inject.Inject
 
-class CryptoDownloadImpl @Inject constructor (val api : CryptoAPI) : CryptoDownload {
-    override suspend fun downloadCryptos(): Resource<List<CryptoModel>> {
+class DownloadCryptosUseCase @Inject constructor (val api : CryptoAPI) {
+    suspend fun executeDownloadCryptos(): Resource<List<CryptoModel>> {
         return try {
             val response = api.getData()
             if (response.isSuccessful) {

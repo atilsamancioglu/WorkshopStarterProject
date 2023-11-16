@@ -1,8 +1,9 @@
-package com.atilsamancioglu.cryptoworkshopstarter.di
+package com.atilsamancioglu.cryptoworkshopstarter.data.di
 
-import com.atilsamancioglu.cryptoworkshopstarter.repository.CryptoDownload
-import com.atilsamancioglu.cryptoworkshopstarter.repository.CryptoDownloadImpl
-import com.atilsamancioglu.cryptoworkshopstarter.service.CryptoAPI
+import com.atilsamancioglu.cryptoworkshopstarter.domain.repository.CryptoDownload
+import com.atilsamancioglu.cryptoworkshopstarter.data.repository.CryptoDownloadImpl
+import com.atilsamancioglu.cryptoworkshopstarter.data.service.CryptoAPI
+import com.atilsamancioglu.cryptoworkshopstarter.domain.use_case.download_cryptos.DownloadCryptosUseCase
 import com.atilsamancioglu.cryptoworkshopstarter.util.Constants.BASE_URL
 import dagger.Module
 import dagger.Provides
@@ -29,5 +30,5 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun injectCryptoRepo(cryptoAPI : CryptoAPI) = CryptoDownloadImpl(cryptoAPI) as CryptoDownload
+    fun injectCryptoRepo(useCase: DownloadCryptosUseCase) = CryptoDownloadImpl(useCase) as CryptoDownload
 }

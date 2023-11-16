@@ -1,4 +1,4 @@
-package com.atilsamancioglu.cryptoworkshopstarter.view
+package com.atilsamancioglu.cryptoworkshopstarter.presentation.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

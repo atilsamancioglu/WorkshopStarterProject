@@ -1,13 +1,10 @@
-package com.atilsamancioglu.cryptoworkshopstarter.viewmodel
+package com.atilsamancioglu.cryptoworkshopstarter.presentation.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.atilsamancioglu.cryptoworkshopstarter.model.CryptoModel
-import com.atilsamancioglu.cryptoworkshopstarter.repository.CryptoDownload
-import com.atilsamancioglu.cryptoworkshopstarter.service.CryptoAPI
+import com.atilsamancioglu.cryptoworkshopstarter.domain.model.CryptoModel
+import com.atilsamancioglu.cryptoworkshopstarter.domain.repository.CryptoDownload
 import com.atilsamancioglu.cryptoworkshopstarter.util.Resource
-import com.atilsamancioglu.cryptoworkshopstarter.view.RecyclerViewAdapter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
@@ -15,8 +12,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Inject
 
 @HiltViewModel
