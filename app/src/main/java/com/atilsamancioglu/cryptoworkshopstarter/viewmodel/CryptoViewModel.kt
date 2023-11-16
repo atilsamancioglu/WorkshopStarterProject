@@ -4,8 +4,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.atilsamancioglu.cryptoworkshopstarter.model.CryptoModel
+import com.atilsamancioglu.cryptoworkshopstarter.repository.CryptoDownload
 import com.atilsamancioglu.cryptoworkshopstarter.service.CryptoAPI
+import com.atilsamancioglu.cryptoworkshopstarter.util.Resource
 import com.atilsamancioglu.cryptoworkshopstarter.view.RecyclerViewAdapter
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -14,42 +17,35 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Inject
 
-class CryptoViewModel : ViewModel() {
+@HiltViewModel
+class CryptoViewModel @Inject constructor (val cryptoDownloadRepository : CryptoDownload) : ViewModel() {
 
-    val cryptoList = MutableLiveData<List<CryptoModel>>()
-    val cryptoError = MutableLiveData<Boolean>()
-    val cryptoLoading = MutableLiveData<Boolean>()
+    val cryptoList = MutableLiveData<Resource<List<CryptoModel>>>()
+    val cryptoError = MutableLiveData<Resource<Boolean>>()
+    val cryptoLoading = MutableLiveData<Resource<Boolean>>()
 
-    private val BASE_URL = "https://raw.githubusercontent.com/atilsamancioglu/K21-JSONDataSet/master/"
     private var job : Job? = null
 
     val exceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
         println(throwable.localizedMessage)
-        cryptoError.value = true
+        cryptoError.value = Resource.error(throwable.localizedMessage ?: "Error!",true)
     }
     fun loadData() {
-        cryptoLoading.value = true
-        val retrofit = Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-            .create(CryptoAPI::class.java)
-
+        cryptoLoading.value = Resource.loading(true)
 
         job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-            val response = retrofit.getData()
-
+            val resource = cryptoDownloadRepository.downloadCryptos()
             withContext(Dispatchers.Main) {
-                if(response.isSuccessful) {
-                    response.body()?.let {
-                        cryptoLoading.value = false
-                        cryptoError.value = false
-                        cryptoList.value = it
-                    }
+                resource.data?.let {
+                    cryptoLoading.value = Resource.loading(false)
+                    cryptoError.value = Resource.error("",false)
+                    cryptoList.value = resource
                 }
             }
         }
+
     }
 
     override fun onCleared() {

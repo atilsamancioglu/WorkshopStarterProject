@@ -15,6 +15,7 @@ import com.atilsamancioglu.cryptoworkshopstarter.model.CryptoModel
 import com.atilsamancioglu.cryptoworkshopstarter.databinding.FragmentListBinding
 import com.atilsamancioglu.cryptoworkshopstarter.service.CryptoAPI
 import com.atilsamancioglu.cryptoworkshopstarter.viewmodel.CryptoViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -23,6 +24,7 @@ import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+@AndroidEntryPoint
 class ListFragment : Fragment(), RecyclerViewAdapter.Listener {
 
     private var _binding: FragmentListBinding? = null
@@ -61,28 +63,34 @@ class ListFragment : Fragment(), RecyclerViewAdapter.Listener {
         viewModel.cryptoList.observe(viewLifecycleOwner, Observer {cryptos ->
             binding.cryptoErrorText.visibility = View.GONE
             binding.recyclerView.visibility = View.VISIBLE
-            cryptoAdapter = RecyclerViewAdapter(ArrayList(cryptos), this@ListFragment)
+            cryptoAdapter = RecyclerViewAdapter(ArrayList(cryptos.data ?: arrayListOf()), this@ListFragment)
             binding.recyclerView.adapter = cryptoAdapter
         })
 
 
         viewModel.cryptoError.observe(viewLifecycleOwner, Observer {error ->
-            if (error) {
-                binding.cryptoErrorText.visibility = View.VISIBLE
-                binding.recyclerView.visibility = View.GONE
-            } else {
-                binding.cryptoErrorText.visibility = View.GONE
+            error.data?.let {
+                if (it) {
+                    binding.cryptoErrorText.visibility = View.VISIBLE
+                    binding.recyclerView.visibility = View.GONE
+                } else {
+                    binding.cryptoErrorText.visibility = View.GONE
+                }
             }
+
         })
 
         viewModel.cryptoLoading.observe(viewLifecycleOwner, Observer { loading ->
-            if(loading) {
-                binding.cryptoProgressBar.visibility = View.VISIBLE
-                binding.recyclerView.visibility = View.GONE
-                binding.cryptoErrorText.visibility = View.GONE
-            } else {
-                binding.cryptoProgressBar.visibility = View.GONE
+            loading.data?.let {
+                if(it) {
+                    binding.cryptoProgressBar.visibility = View.VISIBLE
+                    binding.recyclerView.visibility = View.GONE
+                    binding.cryptoErrorText.visibility = View.GONE
+                } else {
+                    binding.cryptoProgressBar.visibility = View.GONE
+                }
             }
+
         })
     }
 
