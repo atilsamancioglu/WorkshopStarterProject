@@ -1,4 +1,4 @@
-package com.atilsamancioglu.cryptoworkshopstarter
+package com.atilsamancioglu.cryptoworkshopstarter.model
 
 data class CryptoModel(
     val currency : String,
