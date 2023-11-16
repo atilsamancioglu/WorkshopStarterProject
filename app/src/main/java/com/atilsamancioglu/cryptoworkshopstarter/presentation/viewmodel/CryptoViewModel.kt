@@ -2,6 +2,7 @@ package com.atilsamancioglu.cryptoworkshopstarter.presentation.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.atilsamancioglu.cryptoworkshopstarter.domain.model.CryptoModel
 import com.atilsamancioglu.cryptoworkshopstarter.domain.repository.CryptoDownload
 import com.atilsamancioglu.cryptoworkshopstarter.util.Resource
@@ -21,7 +22,6 @@ class CryptoViewModel @Inject constructor (val cryptoDownloadRepository : Crypto
     val cryptoError = MutableLiveData<Resource<Boolean>>()
     val cryptoLoading = MutableLiveData<Resource<Boolean>>()
 
-    private var job : Job? = null
 
     val exceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
         println(throwable.localizedMessage)
@@ -30,7 +30,7 @@ class CryptoViewModel @Inject constructor (val cryptoDownloadRepository : Crypto
     fun loadData() {
         cryptoLoading.value = Resource.loading(true)
 
-        job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+        viewModelScope.launch(Dispatchers.IO + exceptionHandler)  {
             val resource = cryptoDownloadRepository.downloadCryptos()
             withContext(Dispatchers.Main) {
                 resource.data?.let {
@@ -45,6 +45,5 @@ class CryptoViewModel @Inject constructor (val cryptoDownloadRepository : Crypto
 
     override fun onCleared() {
         super.onCleared()
-        job?.cancel()
     }
 }

@@ -30,7 +30,7 @@ class ListFragment : Fragment(), RecyclerViewAdapter.Listener {
     private var _binding: FragmentListBinding? = null
     private val binding get()= _binding!!
     private var cryptoAdapter = RecyclerViewAdapter(arrayListOf(),this)
-   private lateinit var viewModel : CryptoViewModel
+    private lateinit var viewModel : CryptoViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
